@@ -44,7 +44,22 @@ const handlers: ExportedHandler = {
 			return new Response(undefined, { status: 500, headers });
 		}
 
-		if (url.pathname !== "/") return new Response(undefined, { status: 404, headers });
+		if (url.pathname !== "/") {
+			const accept = req.headers.get("accept");
+			const status = 404;
+			let message = "Not found";
+			let contentType = "text/plain";
+
+			if (accept?.includes("application/json")) {
+				message = JSON.stringify({ status, message });
+				contentType = "application/json";
+			}
+
+			return new Response(message.concat("\n"), {
+				status,
+				headers: { ...headers, "Content-Type": contentType },
+			});
+		}
 
 		switch (req.method.toUpperCase()) {
 			// Normal requests:

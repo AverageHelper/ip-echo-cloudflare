@@ -92,8 +92,20 @@ describe("IP Echo", () => {
 
 	test("responds with 404 if the request path is not root", async () => {
 		const response = await worker.fetch(new URL("test", url));
+		expect(response.headers.get("Content-Type")).toBe("text/plain");
 		expect(response.status).toBe(404);
-		expect(await response.text()).toBe("");
+		expect(await response.text()).toBe("Not found\n");
+	});
+
+	test("responds with 404 and JSON if the Accept header contains 'application/json'", async () => {
+		const response = await worker.fetch(new URL("test", url), {
+			headers: { Accept: "application/json" },
+		});
+		expect(response.headers.get("Content-Type")).toBe("application/json");
+		expect(response.status).toBe(404);
+		expect(await response.text()).toBe(
+			JSON.stringify({ status: 404, message: "Not found" }).concat("\n")
+		);
 	});
 
 	// TODO: Test that it responds with 500 if the request is to an invalid URL (should never happen, but we catch it anyway)
