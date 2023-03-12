@@ -19,7 +19,7 @@ paths:
         200:
           description: The caller's IP address is in the body.
           content:
-            text/html:
+            text/plain:
               schema:
                 type: string
                 example: 127.0.0.1

@@ -9,7 +9,7 @@ function echo(req: Request): Response {
 	// Found IP, respond the way the caller wants us to:
 	const accept = req.headers.get("accept");
 	let message = ip;
-	let contentType = "text/html";
+	let contentType = "text/plain";
 
 	if (accept?.includes("application/json")) {
 		message = JSON.stringify(ip);
