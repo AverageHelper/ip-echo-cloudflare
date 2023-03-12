@@ -51,7 +51,7 @@ describe("IP Echo", () => {
 		expect(response).toHaveProperty("headers");
 		expect(response.headers.get("Vary")).toBe("*");
 		expect(response.headers.get("Cache-Control")).toBe("no-store");
-		expect(response.headers.get("Content-Type")).toBe("text/html");
+		expect(response.headers.get("Content-Type")).toBe("text/plain");
 		expect(response.headers.get("Access-Control-Allow-Origin")).toBe("*");
 		expect(response.headers.get("Access-Control-Allow-Methods")).toInclude("GET");
 		expect(response.headers.get("Access-Control-Allow-Headers")).toInclude("Accept");

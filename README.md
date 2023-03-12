@@ -35,3 +35,9 @@ switch (result.status) {
 		console.error("Something went very very wrong!");
 }
 ```
+
+## No logs?
+
+Not actively. Cloudflare lets me start streaming live access logs down on-demand, and these logs tell me the IP address and inferred location of the request, which is far from ideal. You'll just have to trust that I'm not storing that anywhere.
+
+If you're concerned I may be snooping, feel free to run your own instance!
