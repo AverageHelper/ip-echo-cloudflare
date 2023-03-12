@@ -1,6 +1,6 @@
 {
 	"name": "ip-echo-cloudflare",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A simple no-logs Cloudflare Worker that returns the caller's IP address.",
 	"repository": {
 		"type": "git",
@@ -28,7 +28,7 @@
 		"lint": "./node_modules/.bin/eslint .",
 		"lint:fix": "npm run lint -- --fix",
 		"release": "./node_modules/.bin/ts-node --esm -P tsconfig.test.json ./scripts/release.ts",
-		"deploy": "./node_modules/.bin/wrangler publish ./src/index.ts"
+		"deploy": "./node_modules/.bin/wrangler publish"
 	},
 	"main": "./dist/index.js",
 	"type": "module",
