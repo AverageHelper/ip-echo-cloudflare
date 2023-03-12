@@ -1,0 +1,21 @@
+# Security Policies and Procedures
+
+This document outlines security procedures and general policies for the `standard`
+project.
+
+- [Reporting a Bug](#reporting-a-bug)
+- [Comments on this Policy](#comments-on-this-policy)
+
+## Reporting a Bug
+
+Thank you for improving the security of IP Echo!
+
+If you discover a security vulnerability in IP Echo, please disclose it by [drafting a security advisory on our GitHub](https://github.com/AverageHelper/ip-echo-cloudflare/security/advisories/new). I do not currently have a way of paying out bounties for bugs. Enjoy the good vibes from knowing you're very helpful!
+
+Report security bugs in third-party modules to the person or team maintaining
+the module.
+
+## Comments on this Policy
+
+If you have suggestions on how this process could be improved, please submit a
+pull request.

@@ -1,0 +1,10 @@
+{
+	"extends": "./tsconfig.base.json",
+	"compilerOptions": {
+		"declaration": true,
+		"esModuleInterop": true,
+		"types": ["jest", "jest-extended", "@cloudflare/workers-types", "node"]
+	},
+	"include": ["./*.ts", "./*.cjs", "**/*.ts", "**/*.d.ts", "**/*.json", "scripts/**/*"],
+	"exclude": []
+}

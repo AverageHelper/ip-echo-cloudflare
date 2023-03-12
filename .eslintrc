@@ -1,0 +1,95 @@
+{
+	"root": true,
+	"ignorePatterns": ["dist", "node_modules", ".gitignore", "coverage"],
+
+	"extends": [
+		"strictest/eslint",
+		"strictest/promise",
+		"strictest/typescript-eslint",
+		"strictest/unicorn",
+		"eslint:recommended",
+		"plugin:jest/recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:@typescript-eslint/recommended-requiring-type-checking",
+		"plugin:import/recommended",
+		"plugin:prettier/recommended"
+	],
+	"plugins": [
+		"prettier",
+		"unicorn",
+		"promise",
+		"deprecation",
+		"@typescript-eslint",
+		"import",
+		"file-progress"
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"project": "./tsconfig.json",
+		"tsconfigRootDir": "."
+	},
+	"rules": {
+		"file-progress/activate": 1,
+		"prettier/prettier": "warn",
+		"deprecation/deprecation": "warn",
+		"import/no-unresolved": "off", // TS handles this
+		"no-constant-condition": "warn",
+		"no-console": "error",
+		"no-dupe-else-if": "warn",
+		"consistent-return": "off", // TS handles this
+		"no-duplicate-imports": "off", // typescript-eslint handles this
+		"@typescript-eslint/no-namespace": "off",
+		"@typescript-eslint/no-duplicate-imports": "error",
+		"@typescript-eslint/consistent-type-assertions": "off",
+		"@typescript-eslint/no-empty-interface": "off",
+		"@typescript-eslint/require-await": "warn",
+		"@typescript-eslint/no-inferrable-types": "off",
+		"@typescript-eslint/no-invalid-void-type": "error",
+		"@typescript-eslint/explicit-member-accessibility": [
+			"error",
+			{ "accessibility": "no-public", "overrides": { "properties": "off" } }
+		],
+		"@typescript-eslint/explicit-function-return-type": [
+			"error",
+			{ "allowConciseArrowFunctionExpressionsStartingWithVoid": true }
+		],
+		"@typescript-eslint/consistent-type-definitions": ["warn", "interface"],
+		"@typescript-eslint/array-type": ["warn", { "default": "generic" }],
+		"@typescript-eslint/dot-notation": "off",
+		"@typescript-eslint/consistent-type-imports": "warn",
+		"@typescript-eslint/no-dynamic-delete": "off",
+		"unicorn/catch-error-name": ["warn", { "name": "error" }],
+		"unicorn/import-index": ["error", { "ignoreImports": true }],
+		"unicorn/numeric-separators-style": "warn"
+	},
+
+	"overrides": [
+		{
+			"files": ["**/*.test.ts", "**/__mocks__/**/*.ts"],
+			"extends": ["plugin:prettier/recommended"],
+			"plugins": ["prettier", "@typescript-eslint"],
+			"parser": "@typescript-eslint/parser",
+			"parserOptions": {
+				"project": "./tsconfig.test.json",
+				"tsconfigRootDir": "."
+			},
+			"env": {
+				"jest": true
+			},
+			"rules": {
+				"prettier/prettier": "warn",
+				"max-nested-callbacks": "off" // Unit tests involve a lot of nested callbacks
+			}
+		},
+		{
+			"files": ["scripts/**/*.ts"],
+			"parserOptions": {
+				"project": "./tsconfig.test.json",
+				"tsconfigRootDir": "."
+			},
+			"rules": {
+				"unicorn/no-process-exit": "off"
+			}
+		}
+	]
+}

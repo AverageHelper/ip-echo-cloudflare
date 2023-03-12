@@ -1,0 +1,8 @@
+{
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"eslint.workingDirectories": ["."],
+	"git.branchProtection": ["main"],
+	"todo-tree.filtering.excludeGlobs": ["**/dist/**"],
+	"typescript.tsdk": "node_modules/typescript/lib"
+}
