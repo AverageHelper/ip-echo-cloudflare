@@ -89,4 +89,12 @@ describe("IP Echo", () => {
 		expect(await response.text()).toBe("");
 		expect(response.status).toBe(500);
 	});
+
+	test("responds with 404 if the request path is not root", async () => {
+		const response = await worker.fetch(new URL("test", url));
+		expect(response.status).toBe(404);
+		expect(await response.text()).toBe("");
+	});
+
+	// TODO: Test that it responds with 500 if the request is to an invalid URL (should never happen, but we catch it anyway)
 });

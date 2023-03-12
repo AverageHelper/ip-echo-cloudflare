@@ -35,6 +35,17 @@ const headers = {
 // Cloudflare wants the endpoint to be a `default` export:
 const handlers: ExportedHandler = {
 	fetch(req) {
+		// Figure out what path we're aiming for
+		let url: URL;
+		try {
+			url = new URL(req.url);
+		} catch {
+			// This should never happen
+			return new Response(undefined, { status: 500, headers });
+		}
+
+		if (url.pathname !== "/") return new Response(undefined, { status: 404, headers });
+
 		switch (req.method.toUpperCase()) {
 			// Normal requests:
 			case "GET":
