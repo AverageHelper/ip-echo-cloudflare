@@ -1,6 +1,6 @@
 # IP Echo
 
-A simple no-logs Cloudflare Worker that returns the caller's IP address. (Under construction.)
+A simple no-logs Cloudflare Worker that returns the caller's IP address.
 
 ## Usage
 
@@ -23,15 +23,15 @@ import { ip } from "./ip";
 const result = await ip();
 
 switch (result.status) {
-  case 200:
-    console.info(result.data); // "1.2.3.4"
-    break;
+	case 200:
+		console.info(result.data); // "1.2.3.4"
+		break;
 
-  case 404:
-    console.warn("Couldn't get IP address");
-    break;
+	case 404:
+		console.warn("Couldn't get IP address");
+		break;
 
-  default:
-    console.error("Something went very very wrong!");
+	default:
+		console.error("Something went very very wrong!");
 }
 ```
