@@ -1,7 +1,7 @@
 import type { UnstableDevWorker } from "wrangler";
 import "jest-extended";
 import { unstable_dev } from "wrangler";
-import { repo, version } from "./meta";
+import { repo, title, version } from "./meta";
 
 type Response = Awaited<ReturnType<UnstableDevWorker["fetch"]>>;
 
@@ -111,7 +111,7 @@ describe("IP Echo", () => {
 			expect(response.headers.get("Content-Type")).toBe("application/json");
 			expectHeaders(response);
 			expect(response.status).toBe(200);
-			expect(await response.json()).toStrictEqual({ repo, version });
+			expect(await response.json()).toStrictEqual({ repo, title, version });
 		});
 	});
 });

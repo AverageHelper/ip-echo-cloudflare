@@ -1,8 +1,8 @@
 import { about } from "./about";
-import { repo, version } from "../meta";
+import { repo, title, version } from "../meta";
 
 describe("about", () => {
 	test("responds with appropriate metadata", () => {
-		expect(about()).toStrictEqual({ repo, version });
+		expect(about()).toStrictEqual({ repo, title, version });
 	});
 });
