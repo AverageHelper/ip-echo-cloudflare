@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: IP Echo
-  version: 1.0.0
+  version: 1.1.0
   description: A simple no-logs Cloudflare Worker that returns the caller's IP address. You can read IP Echo's source code on [GitHub](https://github.com/AverageHelper/ip-echo-cloudflare).
   license:
     name: GNU General Public License v3.0
@@ -29,3 +29,26 @@ paths:
                 example: "127.0.0.1"
         500:
           description: The caller's IP address could not be determined, most likely due to a server configuration error.
+  "/about":
+    get:
+      tags:
+        - meta
+      summary: Get some metadata about the project
+      operationId: meta
+      responses:
+        200:
+          description: Some metadata about the project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  repo:
+                    type: string
+                    example: "https://github.com/AverageHelper/ip-echo-cloudflare"
+                  title:
+                    type: string
+                    example: "IP Echo"
+                  version:
+                    type: string
+                    example: "1.1.0"
