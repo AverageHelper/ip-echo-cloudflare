@@ -13,9 +13,6 @@
 			"ts-jest",
 			{
 				"tsconfig": "./tsconfig.test.json",
-				"compilerOptions": {
-					"module": "CommonJS"
-				},
 				"useESM": true
 			}
 		]
