@@ -5,10 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.1.1] - 2023-03-27
 
 ### Changed
 
+- Use "real" routing software so there's less for us to maintain. This way we can better apply what we learn in this package to bigger projects.
 - `Content-Type` response headers now include a `charset` declaration.
 
 ### Fixed
@@ -45,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Cloudflare Worker to echo the caller's IP address.
 
-[Unreleased]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.1.0...HEAD
+[1.1.1]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.0.1...v1.0.2
