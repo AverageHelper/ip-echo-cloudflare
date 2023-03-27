@@ -2,10 +2,14 @@ import type { Context } from "hono";
 import type { Next } from "hono/dist/types/types";
 import { headers } from "./headers";
 
+type Primitive = string | number | boolean;
+
+type Data = Primitive | Array<Primitive> | Record<string, Primitive>;
+
 /**
  * A function that handles a request and provides some data in response.
  */
-type DataProvider = (c: Context) => unknown | Promise<unknown>;
+type DataProvider = (c: Context) => Data | Promise<Data>;
 
 /**
  * A Hono request handler function.
@@ -56,7 +60,7 @@ export function headHandlerFor(provider: DataProvider): Handler {
  * @returns An appropriate `Response` object.
  */
 async function fetchHandler(c: Context, provider: DataProvider): Promise<Response> {
-	const data = await provider(c);
+	const data: Data = await provider(c);
 	const accept = c.req.headers.get("accept");
 	let message: string;
 	let contentType: string;
