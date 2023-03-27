@@ -60,7 +60,7 @@ export function headHandlerFor(provider: DataProvider): Handler {
  * @returns An appropriate `Response` object.
  */
 async function fetchHandler(c: Context, provider: DataProvider): Promise<Response> {
-	const data = await provider(c);
+	const data: Data = await provider(c);
 	const accept = c.req.headers.get("accept");
 	let message: string;
 	let contentType: string;
