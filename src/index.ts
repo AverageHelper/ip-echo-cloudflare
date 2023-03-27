@@ -32,7 +32,6 @@ const app = new Hono()
 		}
 
 		// Pretend this is an unknown route
-		// return handle(c, badPath);
 		return handlerFor(badPath)(c, next);
 	})
 
