@@ -2,10 +2,14 @@ import type { Context } from "hono";
 import type { Next } from "hono/dist/types/types";
 import { headers } from "./headers";
 
+type Primitive = string | number | boolean;
+
+type Data = Primitive | Array<Primitive> | Record<string, Primitive>;
+
 /**
  * A function that handles a request and provides some data in response.
  */
-type DataProvider = (c: Context) => unknown | Promise<unknown>;
+type DataProvider = (c: Context) => Data | Promise<Data>;
 
 /**
  * A Hono request handler function.
