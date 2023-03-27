@@ -1,9 +1,9 @@
-export class InternalError extends Error {
-	readonly status: number;
+import type { StatusCode } from "hono/utils/http-status";
+import { HTTPException } from "hono/http-exception";
 
-	constructor(status: number = 500, message: string = "Internal error") {
-		super(message);
-		this.status = status;
+export class InternalError extends HTTPException {
+	constructor(res: Response, status: StatusCode = 500, message: string = "Internal error") {
+		super(status, { message, res });
 		this.name = "InternalError";
 	}
 }

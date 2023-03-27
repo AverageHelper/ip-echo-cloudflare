@@ -9,13 +9,10 @@
 	},
 	"testRegex": [".*\\.test\\.ts$"],
 	"transform": {
-		"^.+\\.m?[tj]sx?$": [
+		"^.+\\.tsx?$": [
 			"ts-jest",
 			{
 				"tsconfig": "./tsconfig.test.json",
-				"compilerOptions": {
-					"module": "CommonJS"
-				},
 				"useESM": true
 			}
 		]

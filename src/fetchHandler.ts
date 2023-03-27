@@ -1,83 +1,76 @@
-import { assertValidMethod } from "./Router";
+import type { Context } from "hono";
+import type { Next } from "hono/dist/types/types";
 import { headers } from "./headers";
-import { InternalError } from "./errors/InternalError";
-import { MethodNotAllowedError } from "./errors/MethodNotAllowedError";
-import { NotFoundError } from "./errors/NotFoundError";
-import { routes } from "./routes";
 
-export function fetchHandler(req: Request): Response {
-	try {
-		const url = new URL(req.url);
+/**
+ * A function that handles a request and provides some data in response.
+ */
+type DataProvider = (c: Context) => unknown | Promise<unknown>;
 
-		// Figure out what path we're aiming for
-		const route = routes[url.pathname];
-		if (!route) throw new NotFoundError();
+/**
+ * A Hono request handler function.
+ */
+type Handler = (c: Context, next: Next) => Response | Promise<Response>;
 
-		// Figure out what method we're aiming for
-		const method = req.method.toUpperCase();
-		assertValidMethod(method);
+/**
+ * Creates a handler function for the given data provider.
+ * We could define the handler together in place, but
+ * that makes test coverage hard to get.
+ *
+ * @param provider The data provider.
+ * @returns A new request handler that formats the result of
+ * the given handler depending on the request context.
+ */
+export function handlerFor(provider: DataProvider): Handler {
+	// Respond with result from handler
+	return async c => await fetchHandler(c, provider);
+}
 
-		// Handle CORS preflight
-		if (method === "OPTIONS") {
-			// TODO: Give appropriate 'Access-Control-Allow-Methods' for the route
-			return new Response(undefined, { status: 204, headers });
-		}
+/**
+ * Creates a handler function for the given data provider.
+ * We could define the handler together in place, but
+ * that makes test coverage hard to get.
+ *
+ * Should only be used to handle `HEAD` requests. See
+ * [MDN](https://developer.mozilla.org/en-US/docs/web/http/methods/head).
+ *
+ * @param provider The data provider.
+ * @returns A new request handler that responds with only the
+ * headers returned by the given handler.
+ */
+export function headHandlerFor(provider: DataProvider): Handler {
+	// Respond with only headers from GET handler
+	return async c => {
+		const res = await fetchHandler(c, provider);
+		return new Response(undefined, { headers: res.headers });
+	};
+}
 
-		// Get the method's handler
-		const handler = route[method];
-		if (!handler) throw new MethodNotAllowedError();
+/**
+ * Runs the given data provider with the given request context,
+ * returning a {@link Response} body formatted appropriately according
+ * to the request's `Accept` header.
+ *
+ * @param c The request context.
+ * @param provider The data provider.
+ * @returns An appropriate `Response` object.
+ */
+async function fetchHandler(c: Context, provider: DataProvider): Promise<Response> {
+	const data = await provider(c);
+	const accept = c.req.headers.get("accept");
+	let message: string;
+	let contentType: string;
 
-		const data = handler(req);
-
-		// Respond with the requested data, according to the Accept header
-		const accept = req.headers.get("accept");
-		let message: string;
-		let contentType: string;
-
-		if (accept?.includes("application/json") || typeof data === "object") {
-			message = JSON.stringify(data);
-			contentType = "application/json";
-		} else {
-			message = typeof data === "string" ? data : JSON.stringify(data);
-			contentType = "text/plain";
-		}
-
-		return new Response(message.concat("\n"), {
-			status: 200,
-			headers: { ...headers, "Content-Type": contentType },
-		});
-	} catch (error_) {
-		let error: InternalError;
-		if (error_ instanceof InternalError) {
-			error = error_;
-		} else {
-			error = new InternalError();
-		}
-
-		const status = error.status;
-		const data = { status, message: error.message };
-
-		// Respond with the error, according to the Accept header
-		const accept = req.headers.get("accept");
-		let message: string;
-		let contentType: string;
-
-		if (accept?.includes("application/json")) {
-			message = JSON.stringify(data);
-			contentType = "application/json";
-		} else {
-			message = error.message;
-			contentType = "text/plain";
-		}
-
-		// Append newline if not an empty string
-		if (message) {
-			message = message.concat("\n");
-		}
-
-		return new Response(message, {
-			status,
-			headers: { ...headers, "Content-Type": contentType },
-		});
+	if (accept?.includes("application/json") || typeof data === "object") {
+		message = JSON.stringify(data);
+		contentType = "application/json";
+	} else {
+		message = typeof data === "string" ? data : JSON.stringify(data);
+		contentType = "text/plain";
 	}
+
+	return new Response(message.concat("\n"), {
+		status: 200,
+		headers: { ...headers, "Content-Type": `${contentType};charset=UTF-8` },
+	});
 }

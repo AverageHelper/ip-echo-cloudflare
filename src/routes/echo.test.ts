@@ -1,3 +1,4 @@
+import type { Context } from "hono";
 import { echo } from "./echo";
 import { InternalError } from "../errors/InternalError";
 import fetchMock from "jest-fetch-mock";
@@ -8,15 +9,17 @@ describe("echo", () => {
 	const IP_HEADER_NAME = "CF-Connecting-IP";
 	const TEST_IP = "::ffff:127.0.0.1";
 
-	test("returns the IP address", () => {
+	test("returns the IP address", async () => {
 		const req = new Request(url, {
 			headers: { [IP_HEADER_NAME]: TEST_IP },
 		});
-		expect(echo(req)).toBe(TEST_IP);
+		const c = { req } as unknown as Context;
+		expect(await echo(c)).toBe(TEST_IP);
 	});
 
-	test("throws if IP is not found", () => {
+	test("throws if IP is not found", async () => {
 		const req = new Request(url);
-		expect(() => echo(req)).toThrow(InternalError);
+		const c = { req } as unknown as Context;
+		await expect(() => echo(c)).rejects.toThrow(InternalError);
 	});
 });
