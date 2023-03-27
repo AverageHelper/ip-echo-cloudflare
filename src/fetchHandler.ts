@@ -32,7 +32,7 @@ export function handlerFor(handler: Handler): _Handler {
  * @returns A new request handler that responds with only the
  * headers returned by the given handler.
  */
-export function headFor(handler: Handler): _Handler {
+export function headHandlerFor(handler: Handler): _Handler {
 	// Respond with only headers from GET handler
 	return c => {
 		const res = fetchHandler(c, handler);

@@ -1,5 +1,5 @@
 import type { Context } from "hono";
-import { handlerFor, headFor } from "./fetchHandler";
+import { handlerFor, headHandlerFor } from "./fetchHandler";
 import fetchMock from "jest-fetch-mock";
 fetchMock.enableMocks(); // Enables use of `Request` and `Response` objects
 
@@ -57,7 +57,7 @@ describe("request handler", () => {
 			const getValue = (): typeof value => value;
 			const req = new Request(url);
 			const c = { req } as unknown as Context;
-			const fetch = headFor(getValue);
+			const fetch = headHandlerFor(getValue);
 			const res = await fetch(c, next);
 
 			expect(await res.text()).toBe("");

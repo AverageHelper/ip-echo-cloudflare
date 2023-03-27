@@ -4,7 +4,7 @@ import { badPath } from "./helpers/badPath";
 import { cors } from "./helpers/cors";
 import { echo } from "./routes/echo";
 import { errorHandler as handleErrors } from "./errorHandler";
-import { handlerFor, headFor } from "./fetchHandler";
+import { handlerFor, headHandlerFor } from "./fetchHandler";
 import { Hono } from "hono";
 import { InternalError } from "./errors/InternalError";
 
@@ -14,13 +14,13 @@ const app = new Hono()
 
 	// Echo
 	.get("/", handlerFor(echo))
-	.head("/", headFor(echo))
+	.head("/", headHandlerFor(echo))
 	.options("/", cors)
 	.all("/", badMethod)
 
 	// About
 	.get("/about", handlerFor(about))
-	.head("/about", headFor(about))
+	.head("/about", headHandlerFor(about))
 	.options("/about", cors)
 	.all("/about", badMethod)
 
