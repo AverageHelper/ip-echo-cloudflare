@@ -47,10 +47,11 @@ describe("IP Echo", () => {
 		});
 
 		test("sanity test is invisible in prod", async () => {
+			// FIXME: Starting another worker like this does weird things on macOS
 			const worker = await unstable_dev("src/index.ts", {
 				experimental: { disableExperimentalWarning: true },
 				port: 60546, // eslint-disable-line unicorn/numeric-separators-style
-				// omit NODE_ENV
+				// omitting NODE_ENV here
 			});
 			try {
 				const res = await worker.fetch(new URL("test-error", url));
