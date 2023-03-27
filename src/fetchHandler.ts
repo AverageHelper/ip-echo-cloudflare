@@ -2,54 +2,61 @@ import type { Context } from "hono";
 import type { Next } from "hono/dist/types/types";
 import { headers } from "./headers";
 
-type Handler = (c: Context) => unknown;
-
-type _Handler = (c: Context, next: Next) => Response | Promise<Response /*| TypedResponse<O>*/>; // | TypedResponse<O>;
+/**
+ * A function that handles a request and provides some data in response.
+ */
+type DataProvider = (c: Context) => unknown | Promise<unknown>;
 
 /**
- * Creates a handler function for the given handler.
+ * A Hono request handler function.
+ */
+type Handler = (c: Context, next: Next) => Response | Promise<Response>;
+
+/**
+ * Creates a handler function for the given data provider.
  * We could define the handler together in place, but
  * that makes test coverage hard to get.
  *
- * @param handler The request handler.
+ * @param provider The data provider.
  * @returns A new request handler that formats the result of
  * the given handler depending on the request context.
  */
-export function handlerFor(handler: Handler): _Handler {
+export function handlerFor(provider: DataProvider): Handler {
 	// Respond with result from handler
-	return c => fetchHandler(c, handler);
+	return async c => await fetchHandler(c, provider);
 }
 
 /**
- * Creates a handler function for the given handler.
+ * Creates a handler function for the given data provider.
  * We could define the handler together in place, but
  * that makes test coverage hard to get.
  *
  * Should only be used to handle `HEAD` requests. See
  * [MDN](https://developer.mozilla.org/en-US/docs/web/http/methods/head).
  *
- * @param handler The request handler.
+ * @param provider The data provider.
  * @returns A new request handler that responds with only the
  * headers returned by the given handler.
  */
-export function headHandlerFor(handler: Handler): _Handler {
+export function headHandlerFor(provider: DataProvider): Handler {
 	// Respond with only headers from GET handler
-	return c => {
-		const res = fetchHandler(c, handler);
+	return async c => {
+		const res = await fetchHandler(c, provider);
 		return new Response(undefined, { headers: res.headers });
 	};
 }
 
 /**
- * Runs the given `handler` with the given context, returning a {@link Response}
- * formatted appropriately according to the request's `Accept` header.
+ * Runs the given data provider with the given request context,
+ * returning a {@link Response} body formatted appropriately according
+ * to the request's `Accept` header.
  *
  * @param c The request context.
- * @param handler The request handler.
+ * @param provider The data provider.
  * @returns An appropriate `Response` object.
  */
-function fetchHandler(c: Context, handler: Handler): Response {
-	const data = handler(c);
+async function fetchHandler(c: Context, provider: DataProvider): Promise<Response> {
+	const data = await provider(c);
 	const accept = c.req.headers.get("accept");
 	let message: string;
 	let contentType: string;
