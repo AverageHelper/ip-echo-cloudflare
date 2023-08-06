@@ -1,3 +1,4 @@
+import "jest-extended";
 import type { Context } from "hono";
 import type { DataProvider } from "./fetchHandler";
 import { handleGet, handlerFor, headHandlerFor } from "./fetchHandler";
@@ -6,6 +7,9 @@ import fetchMock from "jest-fetch-mock";
 fetchMock.enableMocks(); // Enables use of `Request` and `Response` objects
 
 function assertHasSecurityHeaders(res: Response): void {
+	expect(res).toHaveProperty("headers");
+
+	// ** Security **
 	// Cloudflare seems to set Strict-Transport-Security and X-Content-Type-Options automatically
 	expect(res.headers.get("Content-Security-Policy")).toBe("default-src 'self'");
 	expect(res.headers.get("X-Frame-Options")).toBe("SAMEORIGIN");
@@ -13,6 +17,13 @@ function assertHasSecurityHeaders(res: Response): void {
 	expect(res.headers.get("Permissions-Policy")).toBe(
 		"accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), clipboard-read=(), clipboard-write=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=*, gamepad=(), geolocation=(), gyroscope=(), identity-credentials-get=(), idle-detection=(), interest-cohort=(), keyboard-map=(), local-fonts=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=*, publickey-credentials-create=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), speaker-selection=(), storage-access=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=()"
 	);
+
+	// ** Miscellaneous **
+	expect(res.headers.get("Vary")).toBe("*");
+	expect(res.headers.get("Cache-Control")).toBe("no-store");
+	expect(res.headers.get("Access-Control-Allow-Origin")).toBe("*");
+	expect(res.headers.get("Access-Control-Allow-Methods")).toInclude("GET");
+	expect(res.headers.get("Access-Control-Allow-Headers")).toInclude("Accept");
 }
 
 describe("request handler", () => {
