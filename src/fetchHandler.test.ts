@@ -5,6 +5,16 @@ import { Hono } from "hono";
 import fetchMock from "jest-fetch-mock";
 fetchMock.enableMocks(); // Enables use of `Request` and `Response` objects
 
+function assertHasSecurityHeaders(res: Response): void {
+	// Cloudflare seems to set Strict-Transport-Security and X-Content-Type-Options automatically
+	expect(res.headers.get("Content-Security-Policy")).toBe("default-src 'self'");
+	expect(res.headers.get("X-Frame-Options")).toBe("SAMEORIGIN");
+	expect(res.headers.get("Referrer-Policy")).toBe("no-referrer");
+	expect(res.headers.get("Permissions-Policy")).toBe(
+		"accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), clipboard-read=(), clipboard-write=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=*, gamepad=(), geolocation=(), gyroscope=(), identity-credentials-get=(), idle-detection=(), interest-cohort=(), keyboard-map=(), local-fonts=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=*, publickey-credentials-create=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), speaker-selection=(), storage-access=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=()"
+	);
+}
+
 describe("request handler", () => {
 	const url = new URL("https://localhost/");
 	const next = (): Promise<void> => Promise.resolve(undefined);
@@ -20,6 +30,7 @@ describe("request handler", () => {
 
 			expect(await res.json()).toStrictEqual(value);
 			expect(res.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");
+			assertHasSecurityHeaders(res);
 			expect(res.status).toBe(200);
 		}
 	);
@@ -36,6 +47,7 @@ describe("request handler", () => {
 			const message = typeof value === "string" ? value : JSON.stringify(value);
 			expect(await res.text()).toBe(message.concat("\n"));
 			expect(res.headers.get("Content-Type")).toBe("text/plain;charset=UTF-8");
+			assertHasSecurityHeaders(res);
 			expect(res.status).toBe(200);
 		}
 	);
@@ -50,6 +62,7 @@ describe("request handler", () => {
 
 		expect(await res.json()).toStrictEqual(value);
 		expect(res.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");
+		assertHasSecurityHeaders(res);
 		expect(res.status).toBe(200);
 	});
 
@@ -64,6 +77,7 @@ describe("request handler", () => {
 
 			expect(await res.text()).toBe("");
 			expect(res.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");
+			assertHasSecurityHeaders(res);
 			expect(res.status).toBe(200);
 		});
 	});
