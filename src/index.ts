@@ -12,7 +12,7 @@ handleGet(app, "/", echo);
 handleGet(app, "/about", about);
 
 // Testing this endpoint involves a special Cloudflare process that doesn't do coverage
-/* istanbul ignore next */ 
+/* istanbul ignore next */
 app
 
 	// Sanity check that HTTP 500 gets formatted correctly
