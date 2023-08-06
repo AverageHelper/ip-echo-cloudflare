@@ -40,7 +40,7 @@ describe("IP Echo", () => {
 
 	test("exported handler has routes", async () => {
 		const { default: app } = await import("./index");
-		expect(app.routes).toBeArrayOfSize(10);
+		expect(app.routes).toBeArrayOfSize(13);
 	});
 
 	describe("routing", () => {

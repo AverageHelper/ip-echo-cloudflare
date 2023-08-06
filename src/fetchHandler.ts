@@ -4,6 +4,15 @@ import { badMethod } from "./helpers/badMethod";
 import { cors } from "./helpers/cors";
 import { headers } from "./headers";
 
+interface Bindings extends Record<string, unknown> {
+	NODE_ENV?: string;
+}
+
+export interface Env {
+	Bindings?: Bindings;
+	Variables?: Record<string, unknown>;
+}
+
 type Primitive = string | number | boolean;
 
 type Data = Primitive | Array<Primitive> | Record<string, Primitive>;
@@ -11,12 +20,12 @@ type Data = Primitive | Array<Primitive> | Record<string, Primitive>;
 /**
  * A function that handles a request and provides some data in response.
  */
-export type DataProvider = (c: Context) => Data | Promise<Data>;
+export type DataProvider = (c: Context<Env>) => Data | Promise<Data>;
 
 /**
  * A Hono request handler function.
  */
-type Handler = (c: Context, next: Next) => Response | Promise<Response>;
+type Handler = (c: Context<Env>, next: Next) => Response | Promise<Response>;
 
 /**
  * Creates a handler function for the given data provider.
@@ -61,7 +70,7 @@ export function headHandlerFor(provider: DataProvider): Handler {
  * @param provider The data provider.
  * @returns An appropriate `Response` object.
  */
-async function fetchHandler(c: Context, provider: DataProvider): Promise<Response> {
+async function fetchHandler(c: Context<Env>, provider: DataProvider): Promise<Response> {
 	const data: Data = await provider(c);
 	const accept = c.req.headers.get("accept");
 	let message: string;
@@ -91,7 +100,7 @@ async function fetchHandler(c: Context, provider: DataProvider): Promise<Respons
  * @param provider The data provider.
  * @returns The modified Hono app.
  */
-export function handleGet(app: Hono, path: string, provider: DataProvider): Hono {
+export function handleGet(app: Hono<Env>, path: string, provider: DataProvider): Hono<Env> {
 	return app
 		.get(path, handlerFor(provider))
 		.head(path, headHandlerFor(provider))
