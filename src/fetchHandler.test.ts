@@ -1,5 +1,7 @@
 import type { Context } from "hono";
-import { handlerFor, headHandlerFor } from "./fetchHandler";
+import type { DataProvider } from "./fetchHandler";
+import { handleGet, handlerFor, headHandlerFor } from "./fetchHandler";
+import { Hono } from "hono";
 import fetchMock from "jest-fetch-mock";
 fetchMock.enableMocks(); // Enables use of `Request` and `Response` objects
 
@@ -63,6 +65,21 @@ describe("request handler", () => {
 			expect(await res.text()).toBe("");
 			expect(res.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");
 			expect(res.status).toBe(200);
+		});
+	});
+
+	describe("GET handler", () => {
+		test("sets GET endpoint", async () => {
+			const mockApp = new Hono();
+			const path = "/foo";
+			const result = "bar";
+			const provider: DataProvider = () => result;
+
+			expect(handleGet(mockApp, path, provider)).toBe(mockApp);
+
+			const res = await mockApp.request(path);
+			expect(res.status).toBe(200);
+			expect(await res.text()).toBe(result.concat("\n"));
 		});
 	});
 });

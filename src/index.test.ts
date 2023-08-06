@@ -38,6 +38,11 @@ describe("IP Echo", () => {
 		await worker.stop();
 	});
 
+	test("exported handler has routes", async () => {
+		const { default: app } = await import("./index");
+		expect(app.routes).toBeArrayOfSize(10);
+	});
+
 	describe("routing", () => {
 		test("returns 404 for unknown route", async () => {
 			const res = await worker.fetch(new URL("lolz", url));
@@ -54,7 +59,7 @@ describe("IP Echo", () => {
 				// omitting NODE_ENV here
 			});
 			try {
-				const res = await worker.fetch(new URL("test-error", url));
+				const res = await worker.fetch(new URL("failure", url));
 				expect(res.headers.get("Content-Type")).toBe("text/plain;charset=UTF-8");
 				expect(res.status).toBe(404);
 				expect(await res.text()).toBe("Not found\n");
@@ -65,7 +70,7 @@ describe("IP Echo", () => {
 		});
 
 		test("returns 500 and text if handler throws unknown error", async () => {
-			const res = await worker.fetch(new URL("test-error", url));
+			const res = await worker.fetch(new URL("failure", url));
 			expect(res.headers.get("Content-Type")).toBe("text/plain;charset=UTF-8");
 			expect(res.status).toBe(500);
 			expect(await res.text()).toBe("Internal error\n");
@@ -73,7 +78,7 @@ describe("IP Echo", () => {
 		});
 
 		test("returns 500 and JSON if handler throws unknown error", async () => {
-			const res = await worker.fetch(new URL("test-error", url), {
+			const res = await worker.fetch(new URL("failure", url), {
 				headers: { Accept: "application/json" },
 			});
 			expect(res.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");

@@ -1,5 +1,7 @@
-import type { Context } from "hono";
+import type { Context, Hono } from "hono";
 import type { Next } from "hono/dist/types/types";
+import { badMethod } from "./helpers/badMethod";
+import { cors } from "./helpers/cors";
 import { headers } from "./headers";
 
 type Primitive = string | number | boolean;
@@ -9,7 +11,7 @@ type Data = Primitive | Array<Primitive> | Record<string, Primitive>;
 /**
  * A function that handles a request and provides some data in response.
  */
-type DataProvider = (c: Context) => Data | Promise<Data>;
+export type DataProvider = (c: Context) => Data | Promise<Data>;
 
 /**
  * A Hono request handler function.
@@ -77,4 +79,22 @@ async function fetchHandler(c: Context, provider: DataProvider): Promise<Respons
 		status: 200,
 		headers: { ...headers, "Content-Type": `${contentType};charset=UTF-8` },
 	});
+}
+
+/**
+ * Registers a GET endpoint on the given app for the given path,
+ * including handlers for HEAD and OPTIONS requests,
+ * and handling other methods.
+ *
+ * @param app The app on which to register the endpoint
+ * @param path The path of requests.
+ * @param provider The data provider.
+ * @returns The modified Hono app.
+ */
+export function handleGet(app: Hono, path: string, provider: DataProvider): Hono {
+	return app
+		.get(path, handlerFor(provider))
+		.head(path, headHandlerFor(provider))
+		.options(path, cors)
+		.all(path, badMethod);
 }
