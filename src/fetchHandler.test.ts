@@ -1,6 +1,6 @@
 import "jest-extended";
 import type { Context } from "hono";
-import type { DataProvider } from "./fetchHandler";
+import type { DataProvider, Env } from "./fetchHandler";
 import { handleGet, handlerFor, headHandlerFor } from "./fetchHandler";
 import { Hono } from "hono";
 import fetchMock from "jest-fetch-mock";
@@ -35,7 +35,7 @@ describe("request handler", () => {
 		async value => {
 			const getValue = (): typeof value => value;
 			const req = new Request(url, { headers: { Accept: "application/json" } });
-			const c = { req } as unknown as Context;
+			const c = { req } as unknown as Context<Env, string>;
 			const fetch = handlerFor(getValue);
 			const res = await fetch(c, next);
 
@@ -51,7 +51,7 @@ describe("request handler", () => {
 		async value => {
 			const getValue = (): typeof value => value;
 			const req = new Request(url);
-			const c = { req } as unknown as Context;
+			const c = { req } as unknown as Context<Env, string>;
 			const fetch = handlerFor(getValue);
 			const res = await fetch(c, next);
 
@@ -67,7 +67,7 @@ describe("request handler", () => {
 		const value = { a: "b" };
 		const getValue = (): typeof value => value;
 		const req = new Request(url);
-		const c = { req } as unknown as Context;
+		const c = { req } as unknown as Context<Env, string>;
 		const fetch = handlerFor(getValue);
 		const res = await fetch(c, next);
 
@@ -82,7 +82,7 @@ describe("request handler", () => {
 			const value = { a: "b" };
 			const getValue = (): typeof value => value;
 			const req = new Request(url);
-			const c = { req } as unknown as Context;
+			const c = { req } as unknown as Context<Env, string>;
 			const fetch = headHandlerFor(getValue);
 			const res = await fetch(c, next);
 
@@ -98,7 +98,7 @@ describe("request handler", () => {
 			const mockApp = new Hono();
 			const path = "/foo";
 			const result = "bar";
-			const provider: DataProvider = () => result;
+			const provider: DataProvider<typeof path> = () => result;
 
 			expect(handleGet(mockApp, path, provider)).toBe(mockApp);
 

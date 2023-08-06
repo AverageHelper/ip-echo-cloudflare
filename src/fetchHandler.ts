@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import type { Context, Hono } from "hono";
-import type { Next } from "hono/dist/types/types";
+import type { Input, Next } from "hono/dist/types/types";
 import { badMethod } from "./helpers/badMethod";
 import { cors } from "./helpers/cors";
 import { headers } from "./headers";
@@ -20,12 +21,17 @@ type Data = Primitive | Array<Primitive> | Record<string, Primitive>;
 /**
  * A function that handles a request and provides some data in response.
  */
-export type DataProvider = (c: Context<Env>) => Data | Promise<Data>;
+export type DataProvider<P extends string, I extends Input = {}> = (
+	context: Context<Env, P, I>
+) => Data | Promise<Data>;
 
 /**
  * A Hono request handler function.
  */
-type Handler = (c: Context<Env>, next: Next) => Response | Promise<Response>;
+type Handler<P extends string, I extends Input = {}> = (
+	context: Context<Env, P, I>,
+	next: Next
+) => Response | Promise<Response>;
 
 /**
  * Creates a handler function for the given data provider.
@@ -36,7 +42,9 @@ type Handler = (c: Context<Env>, next: Next) => Response | Promise<Response>;
  * @returns A new request handler that formats the result of
  * the given handler depending on the request context.
  */
-export function handlerFor(provider: DataProvider): Handler {
+export function handlerFor<P extends string, I extends Input = {}>(
+	provider: DataProvider<P, I>
+): Handler<P, I> {
 	// Respond with result from handler
 	return async c => await fetchHandler(c, provider);
 }
@@ -53,7 +61,9 @@ export function handlerFor(provider: DataProvider): Handler {
  * @returns A new request handler that responds with only the
  * headers returned by the given handler.
  */
-export function headHandlerFor(provider: DataProvider): Handler {
+export function headHandlerFor<P extends string, I extends Input = {}>(
+	provider: DataProvider<P, I>
+): Handler<P, I> {
 	// Respond with only headers from GET handler
 	return async c => {
 		const res = await fetchHandler(c, provider);
@@ -70,9 +80,12 @@ export function headHandlerFor(provider: DataProvider): Handler {
  * @param provider The data provider.
  * @returns An appropriate `Response` object.
  */
-async function fetchHandler(c: Context<Env>, provider: DataProvider): Promise<Response> {
-	const data: Data = await provider(c);
-	const accept = c.req.headers.get("accept");
+async function fetchHandler<P extends string, I extends Input = {}>(
+	context: Context<Env, P, I>,
+	provider: DataProvider<P, I>
+): Promise<Response> {
+	const data: Data = await provider(context);
+	const accept = context.req.headers.get("accept");
 	let message: string;
 	let contentType: string;
 
@@ -100,7 +113,11 @@ async function fetchHandler(c: Context<Env>, provider: DataProvider): Promise<Re
  * @param provider The data provider.
  * @returns The modified Hono app.
  */
-export function handleGet(app: Hono<Env>, path: string, provider: DataProvider): Hono<Env> {
+export function handleGet<P extends string, I extends Input = {}>(
+	app: Hono<Env>,
+	path: P,
+	provider: DataProvider<P, I>
+): Hono<Env> {
 	return app
 		.get(path, handlerFor(provider))
 		.head(path, headHandlerFor(provider))

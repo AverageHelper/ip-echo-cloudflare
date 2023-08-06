@@ -1,4 +1,5 @@
 import type { Context } from "hono";
+import type { Env } from "../fetchHandler";
 import { InternalError } from "../errors/InternalError";
 
 /**
@@ -8,7 +9,7 @@ import { InternalError } from "../errors/InternalError";
  * @returns The IP address.
  * @throws a {@link InternalError} if the `CF-Connecting-IP` header is not set.
  */
-export async function echo({ req, res }: Context): Promise<string> {
+export async function echo({ req, res }: Context<Env, "/">): Promise<string> {
 	// See https://developers.cloudflare.com/fundamentals/get-started/reference/http-request-headers/
 	const ip = req.headers.get("CF-Connecting-IP");
 	if (!ip) {
