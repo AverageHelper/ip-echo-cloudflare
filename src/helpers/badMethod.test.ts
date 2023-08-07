@@ -1,4 +1,5 @@
 import type { Context } from "hono";
+import type { Env } from "../fetchHandler";
 import { MethodNotAllowedError } from "../errors/MethodNotAllowedError";
 import { badMethod } from "./badMethod";
 import fetchMock from "jest-fetch-mock";
@@ -9,7 +10,7 @@ describe("badMethod", () => {
 
 	test("throws a MethodNotAllowedError", () => {
 		const req = new Request(url);
-		const c = { req } as unknown as Context;
+		const c = { req } as unknown as Context<Env>;
 		expect(() => badMethod(c)).toThrow(MethodNotAllowedError);
 	});
 });
