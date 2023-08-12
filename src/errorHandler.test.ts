@@ -4,8 +4,6 @@ import { errorHandler } from "./errorHandler";
 import { InternalError } from "./errors/InternalError";
 import { MethodNotAllowedError } from "./errors/MethodNotAllowedError";
 import { NotFoundError } from "./errors/NotFoundError";
-import fetchMock from "jest-fetch-mock";
-fetchMock.enableMocks(); // Enables use of `Request` and `Response` objects
 
 describe("error handler", () => {
 	const url = new URL("https://localhost/");
@@ -52,7 +50,7 @@ describe("error handler", () => {
 			const error = new ErrorType(c.res);
 			const res = errorHandler(error, c);
 
-			expect(await res.json()).toStrictEqual({ status: error.status, message: error.message });
+			expect(await res.json()).toMatchObject({ status: error.status, message: error.message });
 			expect(res.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");
 			expect(res.status).toBe(error.status);
 		}
@@ -64,7 +62,7 @@ describe("error handler", () => {
 		const error = new Error("This won't ever be seen");
 		const res = errorHandler(error, c);
 
-		expect(await res.json()).toStrictEqual({ status: 500, message: "Internal error" });
+		expect(await res.json()).toMatchObject({ status: 500, message: "Internal error" });
 		expect(res.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");
 		expect(res.status).toBe(500);
 	});

@@ -44,13 +44,13 @@ If you're concerned I may be snooping, feel free to run your own instance:
 
 ### Prerequisites
 
-This project requires [NodeJS](https://nodejs.org/) (version 16.10 or later) and [NPM](https://npmjs.org/). To make sure you have them available on your machine,
+This project requires [NodeJS](https://nodejs.org/) (version 18.17 or later) and [NPM](https://npmjs.org/). To make sure you have them available on your machine,
 try running the following command:
 
 ```sh
 $ npm -v && node -v
-7.20.3
-v16.15.1
+9.6.7
+v18.17.1
 ```
 
 ### Clone the repo

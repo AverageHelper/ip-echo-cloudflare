@@ -1,8 +1,9 @@
 {
 	"compilerOptions": {
-		"target": "es2020",
-		"lib": ["es2020", "DOM"],
-		"module": "esnext",
+		"target": "ES2022",
+		"lib": ["ES2022", "DOM"],
+		"module": "ES2022",
+		"allowSyntheticDefaultImports": true,
 		"moduleResolution": "node",
 		"skipLibCheck": true, // FIXME: Remove when Hono gets its act together
 		"allowJs": false,

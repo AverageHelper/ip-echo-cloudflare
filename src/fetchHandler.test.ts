@@ -3,8 +3,6 @@ import type { Context } from "hono";
 import type { DataProvider, Env } from "./fetchHandler";
 import { handleGet, handlerFor, headHandlerFor } from "./fetchHandler";
 import { Hono } from "hono";
-import fetchMock from "jest-fetch-mock";
-fetchMock.enableMocks(); // Enables use of `Request` and `Response` objects
 
 function assertHasSecurityHeaders(res: Response): void {
 	expect(res).toHaveProperty("headers");
@@ -39,7 +37,13 @@ describe("request handler", () => {
 			const fetch = handlerFor(getValue);
 			const res = await fetch(c, next);
 
-			expect(await res.json()).toStrictEqual(value);
+			if (typeof value === "object") {
+				/* eslint-disable jest/no-conditional-expect */
+				expect(await res.json()).toMatchObject(value);
+			} else {
+				expect(await res.json()).toBe(value);
+				/* eslint-enable jest/no-conditional-expect */
+			}
 			expect(res.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");
 			assertHasSecurityHeaders(res);
 			expect(res.status).toBe(200);
@@ -71,7 +75,7 @@ describe("request handler", () => {
 		const fetch = handlerFor(getValue);
 		const res = await fetch(c, next);
 
-		expect(await res.json()).toStrictEqual(value);
+		expect(await res.json()).toMatchObject(value);
 		expect(res.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");
 		assertHasSecurityHeaders(res);
 		expect(res.status).toBe(200);

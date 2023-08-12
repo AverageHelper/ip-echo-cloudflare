@@ -2,8 +2,6 @@ import type { UnstableDevWorker } from "wrangler";
 import "jest-extended";
 import { repo, title, version } from "./meta";
 import { unstable_dev } from "wrangler";
-import fetchMock from "jest-fetch-mock";
-fetchMock.enableMocks(); // Enables use of `Request` and `Response` objects
 
 type Response = Awaited<ReturnType<UnstableDevWorker["fetch"]>>;
 
