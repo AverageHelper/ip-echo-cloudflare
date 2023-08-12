@@ -2,8 +2,6 @@ import type { Context } from "hono";
 import type { Env } from "../fetchHandler";
 import { echo } from "./echo";
 import { InternalError } from "../errors/InternalError";
-import fetchMock from "jest-fetch-mock";
-fetchMock.enableMocks(); // Enables use of `Request` and `Response` objects
 
 describe("echo", () => {
 	const url = new URL("https://localhost/");

@@ -1,7 +1,5 @@
 import "jest-extended";
 import { cors } from "./cors";
-import fetchMock from "jest-fetch-mock";
-fetchMock.enableMocks(); // Enables use of `Request` and `Response` objects
 
 describe("cors", () => {
 	test("returns a Response with appropriate headers", () => {
