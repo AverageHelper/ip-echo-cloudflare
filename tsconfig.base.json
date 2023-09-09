@@ -18,12 +18,11 @@
 		"noPropertyAccessFromIndexSignature": true,
 		"noUncheckedIndexedAccess": true,
 		"useUnknownInCatchVariables": true,
-		"importsNotUsedAsValues": "error",
 		"forceConsistentCasingInFileNames": true,
 		"preserveConstEnums": true,
 		"sourceMap": true,
 		"noEmit": true,
 		"types": ["@cloudflare/workers-types"],
-		"typeRoots": ["./node_modules/@types", "./src"]
+		"typeRoots": ["./node_modules/@types", "./node_modules", "./src"]
 	}
 }

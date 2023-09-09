@@ -1,5 +1,4 @@
 import type { UnstableDevWorker } from "wrangler";
-import "jest-extended";
 import { repo, title, version } from "./meta";
 import { unstable_dev } from "wrangler";
 
@@ -28,7 +27,7 @@ describe("IP Echo", () => {
 		// `beforeEach` would spam macOS testers with "Can Node use the network?" prompts
 		worker = await unstable_dev("src/index.ts", {
 			experimental: { disableExperimentalWarning: true },
-			vars: { NODE_ENV: "test" }, // match Jest's Node behavior
+			vars: { NODE_ENV: "test" }, // match Vitest's Node behavior
 		});
 	});
 
@@ -91,7 +90,7 @@ describe("IP Echo", () => {
 			const response = await worker.fetch(url, { method: "OPTIONS" });
 			expectHeaders(response);
 			expect(response.status).toBe(204);
-			expect(response.body).toBe(null);
+			expect(response.body).toBeNull();
 		});
 
 		// See https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods; note that TRACE is not supported
@@ -187,7 +186,7 @@ describe("IP Echo", () => {
 			const response = await worker.fetch(new URL("about", url), { method: "OPTIONS" });
 			expectHeaders(response);
 			expect(response.status).toBe(204);
-			expect(response.body).toBe(null);
+			expect(response.body).toBeNull();
 		});
 
 		// See https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods; note that TRACE is not supported
@@ -212,7 +211,7 @@ describe("IP Echo", () => {
 			expect(response.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");
 			expectHeaders(response);
 			expect(response.status).toBe(200);
-			expect(await response.text()).toStrictEqual("");
+			expect(await response.text()).toBe("");
 		});
 	});
 });
