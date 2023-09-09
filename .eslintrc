@@ -8,7 +8,7 @@
 		"strictest/typescript-eslint",
 		"strictest/unicorn",
 		"eslint:recommended",
-		"plugin:jest/recommended",
+		"plugin:vitest/recommended",
 		"plugin:@typescript-eslint/recommended",
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
 		"plugin:import/recommended",
@@ -20,12 +20,13 @@
 		"promise",
 		"deprecation",
 		"@typescript-eslint",
+		"vitest",
 		"import",
 		"file-progress"
 	],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
-		"project": "./tsconfig.json",
+		"project": "./tsconfig.prod.json",
 		"tsconfigRootDir": "."
 	},
 	"rules": {
@@ -65,16 +66,13 @@
 
 	"overrides": [
 		{
-			"files": ["**/*.test.ts", "**/__mocks__/**/*.ts"],
+			"files": ["./*.ts", "**/*.test.ts", "**/__mocks__/**/*.ts"],
 			"extends": ["plugin:prettier/recommended"],
 			"plugins": ["prettier", "@typescript-eslint"],
 			"parser": "@typescript-eslint/parser",
 			"parserOptions": {
 				"project": "./tsconfig.test.json",
 				"tsconfigRootDir": "."
-			},
-			"env": {
-				"jest": true
 			},
 			"rules": {
 				"prettier/prettier": "warn",

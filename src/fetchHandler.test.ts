@@ -1,4 +1,3 @@
-import "jest-extended";
 import type { Context } from "hono";
 import type { DataProvider, Env } from "./fetchHandler";
 import { handleGet, handlerFor, headHandlerFor } from "./fetchHandler";
@@ -38,11 +37,11 @@ describe("request handler", () => {
 			const res = await fetch(c, next);
 
 			if (typeof value === "object") {
-				/* eslint-disable jest/no-conditional-expect */
+				/* eslint-disable vitest/no-conditional-expect */
 				expect(await res.json()).toMatchObject(value);
 			} else {
 				expect(await res.json()).toBe(value);
-				/* eslint-enable jest/no-conditional-expect */
+				/* eslint-enable vitest/no-conditional-expect */
 			}
 			expect(res.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");
 			assertHasSecurityHeaders(res);

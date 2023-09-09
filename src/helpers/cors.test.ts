@@ -1,4 +1,3 @@
-import "jest-extended";
 import { cors } from "./cors";
 
 describe("cors", () => {

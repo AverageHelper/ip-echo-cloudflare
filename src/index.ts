@@ -15,16 +15,19 @@ handleGet(app, "/about", about);
 
 // Sanity check that HTTP 500 gets formatted correctly
 // Testing this endpoint involves a special Cloudflare process that doesn't do coverage
-/* istanbul ignore next */
-handleGet(app, "/failure", context => {
-	if (context.env?.NODE_ENV === "test") {
-		// In test mode, we always throw
-		throw new InternalError(context.res);
-	}
+handleGet(
+	app,
+	"/failure",
+	/* istanbul ignore next */ context => {
+		if (context.env?.NODE_ENV === "test") {
+			// In test mode, we always throw
+			throw new InternalError(context.res);
+		}
 
-	// Pretend this is an unknown route
-	return badPath(context);
-});
+		// Pretend this is an unknown route
+		return badPath(context);
+	}
+);
 
 app
 	.all("*", badPath) // Return 404 for unknown routes
