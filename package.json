@@ -1,6 +1,6 @@
 {
 	"name": "ip-echo-cloudflare",
-	"version": "1.1.3",
+	"version": "1.1.4",
 	"description": "A simple no-logs Cloudflare Worker that returns the caller's IP address.",
 	"repository": {
 		"type": "git",
