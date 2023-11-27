@@ -29,7 +29,8 @@
 		"lint:fix": "npm run export-version && npm run lint -- --fix",
 		"export-version": "./node_modules/.bin/genversion ./src/meta/version.ts -esd",
 		"release": "./node_modules/.bin/ts-node --esm -P tsconfig.test.json ./scripts/release.ts",
-		"deploy": "npm run build && ./node_modules/.bin/wrangler deploy"
+		"deploy": "npm run build && ./node_modules/.bin/wrangler deploy",
+		"create-release": "./node_modules/.bin/ts-node --esm -P tsconfig.test.json ./scripts/createRelease.ts"
 	},
 	"main": "./dist/index.js",
 	"type": "module",
@@ -41,6 +42,7 @@
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "4.20230801.0",
+		"@redocly/cli": "1.4.1",
 		"@types/node": "18.17.5",
 		"@typescript-eslint/eslint-plugin": "5.54.0",
 		"@typescript-eslint/parser": "5.54.0",
@@ -58,12 +60,12 @@
 		"eslint-plugin-vitest": "0.3.1",
 		"genversion": "3.1.1",
 		"jest-extended": "4.0.1",
-		"keep-a-changelog": "2.2.1",
+		"keep-a-changelog": "2.5.3",
 		"semver": "7.5.4",
 		"superstruct": "1.0.3",
 		"ts-node": "10.9.1",
 		"typescript": "4.9.5",
 		"vitest": "0.34.3",
-		"wrangler": "3.4.0"
+		"wrangler": "3.17.1"
 	}
 }

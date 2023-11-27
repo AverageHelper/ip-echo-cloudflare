@@ -1,0 +1,14 @@
+# On PR to main, check that package.json and package-lock.json share the version, and that CHANGELOG.md is spec-compliant. Block otherwise.
+
+when:
+  - event: manual
+  - event: pull_request
+    branch: main
+
+steps:
+  check:
+    name: Check Versions Match
+    image: node:18
+    commands:
+      - npm ci
+      - npm run release

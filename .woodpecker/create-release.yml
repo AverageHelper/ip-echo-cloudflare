@@ -1,0 +1,16 @@
+# On push to main, if the latest version in CHANGELOG.md is different from the latest version tag, create a new tag, and create a new release.
+
+when:
+  - event: manual
+    branch: main
+  - event: push
+    branch: main
+
+steps:
+  changelog:
+    name: Create Tag and Release
+    image: node:18
+    commands:
+      - npm ci
+      - npm run create-release # Creates tag and release
+    secrets: [codeberg_access_token]

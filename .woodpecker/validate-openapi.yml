@@ -1,0 +1,14 @@
+# Make sure our OpenAPI spec file is valid
+
+when:
+  - event: manual
+  - event: pull_request
+    branch: main
+
+steps:
+  validate_openapi:
+    name: Validate OpenAPI Syntax
+    image: node:18
+    commands:
+      - npm ci
+      - ./node_modules/.bin/redocly lint ./openapi.yaml
