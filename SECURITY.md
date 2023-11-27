@@ -10,7 +10,7 @@ project.
 
 Thank you for improving the security of IP Echo!
 
-If you discover a security vulnerability in IP Echo, please disclose it by [drafting a security advisory on our GitHub](https://github.com/AverageHelper/ip-echo-cloudflare/security/advisories/new). I do not currently have a way of paying out bounties for bugs. Enjoy the good vibes from knowing you're very helpful!
+If you discover a security vulnerability in IP Echo, please disclose it by [drafting a security advisory on our GitHub](https://github.com/AverageHelper/ip-echo-cloudflare/security/advisories/new). (We have since moved primary operations to [Codeberg](https://codeberg.org/AverageHelper/ip-echo-cloudflare), and are working on an alternative reporting site.) I do not currently have a way of paying out bounties for bugs. Enjoy the good vibes from knowing you're very helpful!
 
 Report security bugs in third-party modules to the person or team maintaining
 the module.

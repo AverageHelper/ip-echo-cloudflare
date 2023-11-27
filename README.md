@@ -57,7 +57,7 @@ v18.17.1
 
 ```sh
 $ cd path/to/parent
-$ git clone https://github.com/AverageHelper/ip-echo-cloudflare.git
+$ git clone https://codeberg.org/AverageHelper/ip-echo-cloudflare.git
 $ cd ip-echo-cloudflare
 ```
 

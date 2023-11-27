@@ -44,12 +44,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Cloudflare Worker to echo the caller's IP address.
 
-[1.1.4]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.1.3...v1.1.4
-[1.1.3]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.1.2...v1.1.3
-[1.1.2]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.1.1...v1.1.2
-[1.1.1]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.1.0...v1.1.1
-[1.1.0]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.0.3...v1.1.0
-[1.0.3]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.0.2...v1.0.3
-[1.0.2]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.0.1...v1.0.2
-[1.0.1]: https://github.com/AverageHelper/ip-echo-cloudflare/compare/v1.0.0...v1.0.1
-[1.0.0]: https://github.com/AverageHelper/ip-echo-cloudflare/releases/tag/v1.0.0
+[1.1.4]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.3...v1.1.4
+[1.1.3]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.2...v1.1.3
+[1.1.2]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.1...v1.1.2
+[1.1.1]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.0...v1.1.1
+[1.1.0]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.0.3...v1.1.0
+[1.0.3]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.0.2...v1.0.3
+[1.0.2]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.0.1...v1.0.2
+[1.0.1]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.0.0...v1.0.1
+[1.0.0]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/releases/tag/v1.0.0

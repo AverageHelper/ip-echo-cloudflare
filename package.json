@@ -4,7 +4,7 @@
 	"description": "A simple no-logs Cloudflare Worker that returns the caller's IP address.",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/AverageHelper/ip-echo-cloudflare.git"
+		"url": "git+https://codeberg.org/AverageHelper/ip-echo-cloudflare.git"
 	},
 	"keywords": [
 		"ip",
@@ -15,9 +15,9 @@
 	"author": "AverageHelper",
 	"license": "GPL-3.0",
 	"bugs": {
-		"url": "https://github.com/AverageHelper/ip-echo-cloudflare/issues"
+		"url": "https://codeberg.org/AverageHelper/ip-echo-cloudflare/issues"
 	},
-	"homepage": "https://github.com/AverageHelper/ip-echo-cloudflare#readme",
+	"homepage": "https://codeberg.org/AverageHelper/ip-echo-cloudflare#readme",
 	"scripts": {
 		"start": "./node_modules/.bin/wrangler dev src/index.ts",
 		"test": "./node_modules/.bin/vitest run",

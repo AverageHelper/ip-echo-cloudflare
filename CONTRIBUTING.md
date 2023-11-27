@@ -4,7 +4,7 @@
 
 ## Issues
 
-[Issues](https://github.com/AverageHelper/ip-echo-cloudflare/issues/new/choose) are very valuable to this project.
+[Issues](https://codeberg.org/AverageHelper/ip-echo-cloudflare/issues/new/choose) are very valuable to this project.
 
 - Ideas are a valuable source of contributions others can make
 - Problems show where this project is lacking

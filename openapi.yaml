@@ -2,10 +2,10 @@ openapi: 3.0.1
 info:
   title: IP Echo
   version: 1.1.0
-  description: A simple no-logs Cloudflare Worker that returns the caller's IP address. You can read IP Echo's source code on [GitHub](https://github.com/AverageHelper/ip-echo-cloudflare).
+  description: A simple no-logs Cloudflare Worker that returns the caller's IP address. You can read IP Echo's source code on [Codeberg](https://codeberg.org/AverageHelper/ip-echo-cloudflare).
   license:
     name: GNU General Public License v3.0
-    url: https://github.com/AverageHelper/ip-echo-cloudflare/blob/main/LICENSE
+    url: https://codeberg.org/AverageHelper/ip-echo-cloudflare/blob/main/LICENSE
 servers:
   - url: https://ip.average.name
 paths:
@@ -45,7 +45,7 @@ paths:
                 properties:
                   repo:
                     type: string
-                    example: "https://github.com/AverageHelper/ip-echo-cloudflare"
+                    example: "https://codeberg.org/AverageHelper/ip-echo-cloudflare"
                   title:
                     type: string
                     example: "IP Echo"
