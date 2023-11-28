@@ -1,0 +1,7 @@
+# Lint rules for OpenAPI spec files
+
+extends:
+  - recommended
+
+rules:
+  operation-4xx-response: off

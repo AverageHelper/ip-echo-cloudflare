@@ -9,14 +9,14 @@ import { InternalError } from "../errors/InternalError";
  * @returns The IP address.
  * @throws a {@link InternalError} if the `CF-Connecting-IP` header is not set.
  */
-export async function echo({ req, res }: Context<Env, "/">): Promise<string> {
+export async function echo(c: Context<Env, "/">): Promise<string> {
 	// See https://developers.cloudflare.com/fundamentals/get-started/reference/http-request-headers/
-	const ip = req.headers.get("CF-Connecting-IP");
+	const ip = c.req.header("CF-Connecting-IP");
 	if (!ip) {
 		// No IP address found in headers, must be misconfigured
-		throw new InternalError(res);
+		throw new InternalError();
 	}
 
 	// There's no real "reason" to use a Promise here; it's only to test `async` support upstream:
-	return Promise.resolve(ip);
+	return await Promise.resolve(ip);
 }

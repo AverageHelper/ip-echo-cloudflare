@@ -1,8 +1,8 @@
 import { InternalError } from "./InternalError";
 
 export class MethodNotAllowedError extends InternalError {
-	constructor(res: Response) {
-		super(res, 405, "");
+	constructor() {
+		super(405, "Not Allowed");
 		this.name = "MethodNotAllowedError";
 	}
 }

@@ -15,6 +15,7 @@ paths:
         - echo
       summary: Get the caller's IP address
       operationId: ip
+      security: [] # No security, public info
       responses:
         200:
           description: The caller's IP address is in the body.
@@ -35,6 +36,7 @@ paths:
         - meta
       summary: Get some metadata about the project
       operationId: meta
+      security: [] # No security, public info
       responses:
         200:
           description: Some metadata about the project.

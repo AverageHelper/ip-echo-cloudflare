@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { about } from "./about";
 import { repo, title, version } from "../meta";
 

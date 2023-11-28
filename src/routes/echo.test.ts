@@ -1,7 +1,10 @@
-import type { Context } from "hono";
 import type { Env } from "../fetchHandler";
+import { beforeEach, describe, expect, test, vi } from "vitest";
+import { handleGet } from "../fetchHandler";
 import { echo } from "./echo";
-import { InternalError } from "../errors/InternalError";
+import { Hono } from "hono";
+
+vi.spyOn(console, "error");
 
 describe("echo", () => {
 	const url = new URL("https://localhost/");
@@ -9,17 +12,23 @@ describe("echo", () => {
 	const TEST_IP = "::ffff:127.0.0.1";
 	const PATH = "/";
 
+	let app: Hono<Env>;
+
+	beforeEach(() => {
+		app = new Hono<Env>();
+		handleGet(app, PATH, echo);
+	});
+
 	test("returns the IP address", async () => {
-		const req = new Request(url, {
+		const res = await app.request(url, {
 			headers: { [IP_HEADER_NAME]: TEST_IP },
 		});
-		const c = { req } as unknown as Context<Env, typeof PATH>;
-		expect(await echo(c)).toBe(TEST_IP);
+		expect(await res.text()).toBe(`${TEST_IP}\n`);
 	});
 
 	test("throws if IP is not found", async () => {
-		const req = new Request(url);
-		const c = { req } as unknown as Context<Env, typeof PATH>;
-		await expect(() => echo(c)).rejects.toThrow(InternalError);
+		const res = await app.request(url);
+		expect(res.status).toBe(500);
+		expect(await res.text()).toBe("Internal Server Error");
 	});
 });

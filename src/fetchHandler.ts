@@ -50,28 +50,6 @@ export function handlerFor<P extends string, I extends Input = {}>(
 }
 
 /**
- * Creates a handler function for the given data provider.
- * We could define the handler together in place, but
- * that makes test coverage hard to get.
- *
- * Should only be used to handle `HEAD` requests. See
- * [MDN](https://developer.mozilla.org/en-US/docs/web/http/methods/head).
- *
- * @param provider The data provider.
- * @returns A new request handler that responds with only the
- * headers returned by the given handler.
- */
-export function headHandlerFor<P extends string, I extends Input = {}>(
-	provider: DataProvider<P, I>
-): Handler<P, I> {
-	// Respond with only headers from GET handler
-	return async c => {
-		const res = await fetchHandler(c, provider);
-		return new Response(undefined, { headers: res.headers });
-	};
-}
-
-/**
  * Runs the given data provider with the given request context,
  * returning a {@link Response} body formatted appropriately according
  * to the request's `Accept` header.
@@ -81,11 +59,11 @@ export function headHandlerFor<P extends string, I extends Input = {}>(
  * @returns An appropriate `Response` object.
  */
 async function fetchHandler<P extends string, I extends Input = {}>(
-	context: Context<Env, P, I>,
+	c: Context<Env, P, I>,
 	provider: DataProvider<P, I>
 ): Promise<Response> {
-	const data: Data = await provider(context);
-	const accept = context.req.headers.get("accept");
+	const data: Data = await provider(c);
+	const accept = c.req.header("accept");
 	let message: string;
 	let contentType: string;
 
@@ -97,9 +75,9 @@ async function fetchHandler<P extends string, I extends Input = {}>(
 		contentType = "text/plain";
 	}
 
-	return new Response(message.concat("\n"), {
-		status: 200,
-		headers: { ...headers, "Content-Type": `${contentType};charset=UTF-8` },
+	return c.text(message.concat("\n"), 200, {
+		...headers,
+		"Content-Type": `${contentType};charset=UTF-8`,
 	});
 }
 
@@ -118,9 +96,8 @@ export function handleGet<P extends string, I extends Input = {}>(
 	path: P,
 	provider: DataProvider<P, I>
 ): Hono<Env> {
-	return app
+	return app //
 		.get(path, handlerFor(provider))
-		.head(path, headHandlerFor(provider))
-		.options(path, cors)
-		.all(path, badMethod);
+		.options(cors)
+		.all(badMethod);
 }

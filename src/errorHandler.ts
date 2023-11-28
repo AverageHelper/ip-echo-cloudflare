@@ -1,29 +1,31 @@
 import type { Context } from "hono";
 import type { Env } from "./fetchHandler";
 import { headers } from "./headers";
-import { HTTPException } from "hono/http-exception";
 import { InternalError } from "./errors/InternalError";
 
 /**
  * Handles the given error according to the given context.
  *
- * @param error_ The thrown error.
- * @param context The request context.
+ * @param error An error to return to the client.
+ * @param c The request context.
  * @returns a {@link Response} formatted appropriately according to the request's `Accept` header.
  */
-export function errorHandler(error_: Error, context: Context<Env, string>): Response {
-	let error: HTTPException;
-	if (error_ instanceof HTTPException) {
-		error = error_;
+export function errorHandler(error: Error, c: Context<Env, string>): Response {
+	let err: InternalError;
+
+	if (error instanceof InternalError) {
+		err = error;
 	} else {
-		error = new InternalError(context.res);
+		// eslint-disable-next-line no-console
+		console.error(error);
+		err = new InternalError();
 	}
 
-	const status = error.status;
-	const data = { status, message: error.message };
+	const status = err.status;
+	const data = { status, message: err.message };
 
 	// Respond with the error, according to the Accept header
-	const accept = context.req.headers.get("accept");
+	const accept = c.req.header("accept");
 	let message: string;
 	let contentType: string;
 
@@ -31,7 +33,7 @@ export function errorHandler(error_: Error, context: Context<Env, string>): Resp
 		message = JSON.stringify(data);
 		contentType = "application/json";
 	} else {
-		message = error.message;
+		message = err.message;
 		contentType = "text/plain";
 	}
 
@@ -40,8 +42,5 @@ export function errorHandler(error_: Error, context: Context<Env, string>): Resp
 		message = message.concat("\n");
 	}
 
-	return new Response(message, {
-		status,
-		headers: { ...headers, "Content-Type": `${contentType};charset=UTF-8` },
-	});
+	return c.text(message, status, { ...headers, "Content-Type": `${contentType};charset=UTF-8` });
 }

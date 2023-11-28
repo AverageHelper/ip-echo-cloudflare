@@ -1,6 +1,6 @@
-import type { Context } from "hono";
-import type { DataProvider, Env } from "./fetchHandler";
-import { handleGet, handlerFor, headHandlerFor } from "./fetchHandler";
+import type { Env } from "./fetchHandler";
+import { beforeEach, describe, expect, test } from "vitest";
+import { handleGet } from "./fetchHandler";
 import { Hono } from "hono";
 
 function assertHasSecurityHeaders(res: Response): void {
@@ -19,22 +19,24 @@ function assertHasSecurityHeaders(res: Response): void {
 	expect(res.headers.get("Vary")).toBe("*");
 	expect(res.headers.get("Cache-Control")).toBe("no-store");
 	expect(res.headers.get("Access-Control-Allow-Origin")).toBe("*");
-	expect(res.headers.get("Access-Control-Allow-Methods")).toInclude("GET");
-	expect(res.headers.get("Access-Control-Allow-Headers")).toInclude("Accept");
+	expect(res.headers.get("Access-Control-Allow-Methods")?.includes("GET")).toBe(true);
+	expect(res.headers.get("Access-Control-Allow-Headers")?.includes("Accept")).toBe(true);
 }
 
 describe("request handler", () => {
 	const url = new URL("https://localhost/");
-	const next = (): Promise<void> => Promise.resolve(undefined);
+
+	let app: Hono<Env>;
+
+	beforeEach(() => {
+		app = new Hono<Env>();
+	});
 
 	test.each(["test", 42, { a: "b" }])(
 		'returns "%s" as JSON if the request\'s `Accept` header requests JSON',
 		async value => {
-			const getValue = (): typeof value => value;
-			const req = new Request(url, { headers: { Accept: "application/json" } });
-			const c = { req } as unknown as Context<Env, string>;
-			const fetch = handlerFor(getValue);
-			const res = await fetch(c, next);
+			handleGet(app, "/", () => value);
+			const res = await app.request(url, { headers: { Accept: "application/json" } });
 
 			if (typeof value === "object") {
 				/* eslint-disable vitest/no-conditional-expect */
@@ -52,11 +54,8 @@ describe("request handler", () => {
 	test.each(["test", 42])(
 		'returns "%s" as text if the request\'s `Accept` header is missing',
 		async value => {
-			const getValue = (): typeof value => value;
-			const req = new Request(url);
-			const c = { req } as unknown as Context<Env, string>;
-			const fetch = handlerFor(getValue);
-			const res = await fetch(c, next);
+			handleGet(app, "/", () => value);
+			const res = await app.request(url);
 
 			const message = typeof value === "string" ? value : JSON.stringify(value);
 			expect(await res.text()).toBe(message.concat("\n"));
@@ -68,11 +67,8 @@ describe("request handler", () => {
 
 	test("returns JSON if the request's `Accept` header is missing but the data is JSON", async () => {
 		const value = { a: "b" };
-		const getValue = (): typeof value => value;
-		const req = new Request(url);
-		const c = { req } as unknown as Context<Env, string>;
-		const fetch = handlerFor(getValue);
-		const res = await fetch(c, next);
+		handleGet(app, "/", () => value);
+		const res = await app.request(url);
 
 		expect(await res.json()).toMatchObject(value);
 		expect(res.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");
@@ -83,11 +79,8 @@ describe("request handler", () => {
 	describe("head", () => {
 		test("returns only headers", async () => {
 			const value = { a: "b" };
-			const getValue = (): typeof value => value;
-			const req = new Request(url);
-			const c = { req } as unknown as Context<Env, string>;
-			const fetch = headHandlerFor(getValue);
-			const res = await fetch(c, next);
+			handleGet(app, "/", () => value);
+			const res = await app.request(url, { method: "HEAD" });
 
 			expect(await res.text()).toBe("");
 			expect(res.headers.get("Content-Type")).toBe("application/json;charset=UTF-8");
@@ -98,14 +91,12 @@ describe("request handler", () => {
 
 	describe("GET handler", () => {
 		test("sets GET endpoint", async () => {
-			const mockApp = new Hono();
 			const path = "/foo";
 			const result = "bar";
-			const provider: DataProvider<typeof path> = () => result;
 
-			expect(handleGet(mockApp, path, provider)).toBe(mockApp);
+			expect(handleGet(app, path, () => result)).toBe(app);
 
-			const res = await mockApp.request(path);
+			const res = await app.request(path);
 			expect(res.status).toBe(200);
 			expect(await res.text()).toBe(result.concat("\n"));
 		});
