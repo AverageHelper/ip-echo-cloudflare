@@ -17,3 +17,4 @@ tmp
 temp
 src/meta/version.ts
 *.local
+.wrangler
