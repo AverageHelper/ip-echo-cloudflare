@@ -39,6 +39,7 @@
 	"devDependencies": {
 		"@cloudflare/workers-types": "4.20230801.0",
 		"@redocly/cli": "1.4.1",
+		"@types/node": "20.10.0",
 		"@typescript-eslint/eslint-plugin": "5.54.0",
 		"@typescript-eslint/parser": "5.54.0",
 		"@vitest/coverage-istanbul": "0.34.4",
