@@ -1,6 +1,6 @@
 {
 	"name": "ip-echo-cloudflare",
-	"version": "1.1.5",
+	"version": "1.2.0",
 	"description": "A simple no-logs Cloudflare Worker that returns the caller's IP address.",
 	"repository": {
 		"type": "git",
@@ -37,6 +37,7 @@
 		"hono": "3.10.2"
 	},
 	"devDependencies": {
+		"@cloudflare/kv-asset-handler": "0.3.0",
 		"@cloudflare/workers-types": "4.20230801.0",
 		"@redocly/cli": "1.4.1",
 		"@types/node": "20.10.0",

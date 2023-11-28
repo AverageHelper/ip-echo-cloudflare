@@ -11,10 +11,10 @@ $ curl https://ip.average.name
 1.2.3.4
 ```
 
-The API is documented using [OpenAPI](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/AverageHelper/ip-echo-cloudflare/main/openapi.yaml). You can generate a TypeScript client by plugging our spec file into [oazapfts](https://www.npmjs.com/package/oazapfts):
+The API is documented using [OpenAPI](https://petstore.swagger.io/?url=https://ip.average.name/openapi.yaml). You can generate a TypeScript client by plugging our spec file into [oazapfts](https://www.npmjs.com/package/oazapfts):
 
 ```sh
-$ oazapfts https://raw.githubusercontent.com/AverageHelper/ip-echo-cloudflare/main/openapi.yaml ./ip.ts
+$ oazapfts https://ip.average.name/openapi.yaml ./ip.ts
 ```
 
 ```ts

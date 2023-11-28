@@ -11,4 +11,4 @@ steps:
     image: node:18
     commands:
       - npm ci
-      - ./node_modules/.bin/redocly lint ./openapi.yaml
+      - ./node_modules/.bin/redocly lint ./assets/openapi.yaml

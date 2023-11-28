@@ -1,3 +1,6 @@
 name = "ip-echo"
 main = "src/index.ts"
 compatibility_date = "2023-03-11"
+
+[site]
+bucket = "./assets"

@@ -1,6 +1,15 @@
-import { describe, expect, test } from "vitest";
+import type { Env } from "./fetchHandler";
+import type { Hono } from "hono";
+import type { serveStatic } from "hono/cloudflare-workers";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { repo, title, version } from "./meta";
-import app from "./index";
+
+const { mockServeStatic } = vi.hoisted(() => ({
+	mockServeStatic: vi.fn<Parameters<typeof serveStatic>, ReturnType<typeof serveStatic>>(),
+}));
+vi.mock("hono/cloudflare-workers", () => ({
+	serveStatic: mockServeStatic,
+}));
 
 function expectHeaders(res: Response | globalThis.Response): void {
 	expect(res).toHaveProperty("headers");
@@ -16,18 +25,28 @@ function expectHeaders(res: Response | globalThis.Response): void {
 	expect(res.headers.get("X-Clacks-Overhead")).toBeTypeOf("string"); // don't care what we put in here
 }
 
-/**
- * Calls the app's `request` test handler.
- */
-async function fetch(
-	input: RequestInfo | URL,
-	requestInit: RequestInit<CfProperties<unknown>> | undefined = undefined,
-	Env: NodeJS.ProcessEnv | null = process.env
-): Promise<Response> {
-	return await app.request(input, requestInit, Env ?? undefined);
-}
-
 describe("IP Echo", () => {
+	let app: Hono<Env>;
+
+	beforeEach(async () => {
+		vi.resetModules(); // so we can test mocks on import
+		mockServeStatic.mockReturnValue(async c => {
+			return await Promise.resolve(c.text("TEST VALUE"));
+		});
+		app = (await import("./index")).default;
+	});
+
+	/**
+	 * Calls the app's `request` test handler.
+	 */
+	async function fetch(
+		input: RequestInfo | URL,
+		requestInit: RequestInit<CfProperties<unknown>> | undefined = undefined,
+		Env: NodeJS.ProcessEnv | null = process.env
+	): Promise<Response> {
+		return await app.request(input, requestInit, Env ?? undefined);
+	}
+
 	const url = new URL("https://localhost/");
 	const IP_HEADER_NAME = "CF-Connecting-IP";
 	const TEST_IP = "::ffff:127.0.0.1";
@@ -35,7 +54,7 @@ describe("IP Echo", () => {
 	test("exported handler has routes", async () => {
 		const { default: app } = await import("./index");
 		expect(Array.isArray(app.routes)).toBe(true);
-		expect(app.routes.length).toBe(6);
+		expect(app.routes.length).toBe(9);
 	});
 
 	test("returns 404 for unknown route", async () => {
@@ -172,6 +191,42 @@ describe("IP Echo", () => {
 			expectHeaders(response);
 			expect(response.status).toBe(200);
 			expect(await response.text()).toBe("");
+		});
+	});
+
+	describe("openapi.yaml", () => {
+		test("responds correctly to CORS preflight", async () => {
+			const response = await fetch(new URL("openapi.yaml", url), { method: "OPTIONS" });
+			expectHeaders(response);
+			expect(response.status).toBe(204);
+			expect(response.body).toBeNull();
+		});
+
+		// See https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods; note that TRACE is not supported
+		const BadMethods = ["POST", "PUT", "DELETE", "PATCH"] as const;
+		test.each(BadMethods)("responds 405 to %s requests", async method => {
+			const response = await fetch(new URL("openapi.yaml", url), { method });
+			expectHeaders(response);
+			expect(response.status).toBe(405);
+			expect(await response.text()).toBe("Not Allowed\n");
+		});
+
+		test("responds with our OpenAPI spec", async () => {
+			await fetch(new URL("openapi.yaml", url), { method: "HEAD" });
+			// expect(response.headers.get("Content-Type")).toBe("application/x-yaml;charset=UTF-8");
+			expect(mockServeStatic).toHaveBeenCalledOnce();
+			expect(mockServeStatic).toHaveBeenCalledWith({ root: ".", path: "./openapi.yaml" });
+		});
+
+		test("HEAD responds with appropriate headers", async () => {
+			const response = await fetch(new URL("openapi.yaml", url), { method: "HEAD" });
+			// expect(response.headers.get("Content-Type")).toBe("application/x-yaml;charset=UTF-8");
+			// expect(response.headers.get("Content-Type")).toBe("text/plain;charset=UTF-8");
+			// expectHeaders(response);
+			expect(response.status).toBe(200);
+			expect(await response.text()).toBe("");
+			expect(mockServeStatic).toHaveBeenCalledOnce();
+			expect(mockServeStatic).toHaveBeenCalledWith({ root: ".", path: "./openapi.yaml" });
 		});
 	});
 });

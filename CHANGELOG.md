@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2023-11-27
+### Added
+- New endpoint `/openapi.yaml` answers `GET` requests with our API spec file.
+
 ## [1.1.5] - 2023-11-27
 ### Changed
 - Updated Hono, and simplified some internals.
@@ -51,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Cloudflare Worker to echo the caller's IP address.
 
+[1.2.0]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.5...v1.2.0
 [1.1.5]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.4...v1.1.5
 [1.1.4]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.3...v1.1.4
 [1.1.3]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.2...v1.1.3
