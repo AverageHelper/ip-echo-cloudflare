@@ -26,5 +26,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PR: ${{ github.event.number }}
         run: |
-          gh pr close ${{ env.PR }} --comment "(Automated close) Please do not file pull requests here. [File on Codeberg](https://codeberg.org/AverageHelper/ip-echo-cloudflare) instead."
+          gh pr close ${{ env.PR }} --comment "(Automated close) Please do not file pull requests here. [File at git.average.name](https://git.average.name/AverageHelper/ip-echo-cloudflare) instead."
           gh pr lock ${{ env.PR }}
