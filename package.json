@@ -1,10 +1,10 @@
 {
 	"name": "ip-echo-cloudflare",
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"description": "A simple no-logs Cloudflare Worker that returns the caller's IP address.",
 	"repository": {
 		"type": "git",
-		"url": "git+https://codeberg.org/AverageHelper/ip-echo-cloudflare.git"
+		"url": "git+https://git.average.name/AverageHelper/ip-echo-cloudflare.git"
 	},
 	"keywords": [
 		"ip",
@@ -15,9 +15,9 @@
 	"author": "AverageHelper",
 	"license": "GPL-3.0",
 	"bugs": {
-		"url": "https://codeberg.org/AverageHelper/ip-echo-cloudflare/issues"
+		"url": "https://git.average.name/AverageHelper/ip-echo-cloudflare/issues"
 	},
-	"homepage": "https://codeberg.org/AverageHelper/ip-echo-cloudflare#readme",
+	"homepage": "https://git.average.name/AverageHelper/ip-echo-cloudflare#readme",
 	"scripts": {
 		"start": "./node_modules/.bin/wrangler dev src/index.ts",
 		"test": "./node_modules/.bin/vitest run",
@@ -28,9 +28,9 @@
 		"lint": "npm run export-version && ./node_modules/.bin/eslint .",
 		"lint:fix": "npm run export-version && npm run lint -- --fix",
 		"export-version": "./node_modules/.bin/genversion ./src/meta/version.ts -esd",
-		"release": "./node_modules/.bin/ts-node --esm -P tsconfig.test.json ./scripts/release.ts",
+		"release": "./node_modules/.bin/tsx --tsconfig tsconfig.test.json scripts/release.ts",
 		"deploy": "npm run build && ./node_modules/.bin/wrangler deploy",
-		"create-release": "./node_modules/.bin/ts-node --esm -P tsconfig.test.json ./scripts/createRelease.ts"
+		"create-release": "./node_modules/.bin/tsx --tsconfig tsconfig.test.json scripts/createRelease.ts"
 	},
 	"type": "module",
 	"dependencies": {
@@ -59,7 +59,7 @@
 		"keep-a-changelog": "2.5.3",
 		"semver": "7.5.4",
 		"superstruct": "1.0.3",
-		"ts-node": "10.9.1",
+		"tsx": "4.6.2",
 		"typescript": "4.9.5",
 		"vitest": "0.34.3",
 		"vitest-environment-miniflare": "2.14.1",

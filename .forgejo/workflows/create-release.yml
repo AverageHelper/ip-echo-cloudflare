@@ -1,0 +1,26 @@
+# On push to main, if the latest version in CHANGELOG.md is different from the latest version tag, create a new tag, and create a new release.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Create Tag and Release
+        run: npm run create-release # Creates tag and release
+        env:
+          FORGEJO_ACCESS_TOKEN: ${{ secrets.FORGEJO_ACCESS_TOKEN }}

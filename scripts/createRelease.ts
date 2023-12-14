@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env tsx
 
 import { parser as changelogParser } from "keep-a-changelog";
 import { readFileSync } from "node:fs";
@@ -23,9 +23,9 @@ function requireEnv(key: string): string {
 logger.info("** createRelease.ts **");
 
 // Load env vars
-const accessToken = requireEnv("CODEBERG_ACCESS_TOKEN");
-const ciRepo = requireEnv("CI_REPO");
-const repoReleases = `https://codeberg.org/api/v1/repos/${ciRepo}/releases`;
+const accessToken = requireEnv("FORGEJO_ACCESS_TOKEN");
+const ciRepo = requireEnv("GITHUB_REPOSITORY"); // repository full name (`<owner>/<name>`)
+const repoReleases = `https://git.average.name/api/v1/repos/${ciRepo}/releases`;
 logger.info(`Releases API: ${repoReleases}`);
 
 // Load the changelog
@@ -48,7 +48,7 @@ const tag: string = `v${thisRelease.version}`;
 logger.info("latest version:", tag);
 logger.info("version metadata:", thisRelease);
 
-// See https://codeberg.org/api/swagger#/repository/repoCreateRelease
+// See https://git.average.name/api/swagger#/repository/repoCreateRelease
 // GET /repos/{owner}/{repo}/releases/tags/{tag}
 const remoteReleaseRes = await fetch(`${repoReleases}/tags/${tag}`);
 const remoteRelease = await remoteReleaseRes.json();
@@ -107,7 +107,7 @@ description: ${description.trim()}
 `;
 logger.info(output);
 
-// See https://codeberg.org/api/swagger#/repository/repoCreateRelease
+// See https://git.average.name/api/swagger#/repository/repoCreateRelease
 // POST /repos/{owner}/{repo}/releases
 const result = await fetch(repoReleases, {
 	method: "POST",

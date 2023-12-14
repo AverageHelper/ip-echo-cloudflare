@@ -1,6 +1,5 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env tsx
 
-import "./assertTsNode.js";
 import { assert, enums, string, type } from "superstruct";
 import { parser as changelogParser } from "keep-a-changelog";
 import { readFileSync, writeFileSync } from "node:fs";

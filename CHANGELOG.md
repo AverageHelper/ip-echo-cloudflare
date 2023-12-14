@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2023-12-14
+### Changed
+- Moved to my own Forgejo instance.
+
 ## [1.2.1] - 2023-11-27
 ### Fixed
 - Send CORS and other appropriate headers with our API spec file.
@@ -59,15 +63,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Cloudflare Worker to echo the caller's IP address.
 
-[1.2.1]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.2.0...v1.2.1
-[1.2.0]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.5...v1.2.0
-[1.1.5]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.4...v1.1.5
-[1.1.4]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.3...v1.1.4
-[1.1.3]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.2...v1.1.3
-[1.1.2]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.1...v1.1.2
-[1.1.1]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.1.0...v1.1.1
-[1.1.0]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.0.3...v1.1.0
-[1.0.3]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.0.2...v1.0.3
-[1.0.2]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.0.1...v1.0.2
-[1.0.1]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/compare/v1.0.0...v1.0.1
-[1.0.0]: https://codeberg.org/AverageHelper/ip-echo-cloudflare/releases/tag/v1.0.0
+[1.2.2]: https://git.average.name/AverageHelper/ip-echo-cloudflare/compare/v1.2.1...v1.2.2
+[1.2.1]: https://git.average.name/AverageHelper/ip-echo-cloudflare/compare/v1.2.0...v1.2.1
+[1.2.0]: https://git.average.name/AverageHelper/ip-echo-cloudflare/compare/v1.1.5...v1.2.0
+[1.1.5]: https://git.average.name/AverageHelper/ip-echo-cloudflare/compare/v1.1.4...v1.1.5
+[1.1.4]: https://git.average.name/AverageHelper/ip-echo-cloudflare/compare/v1.1.3...v1.1.4
+[1.1.3]: https://git.average.name/AverageHelper/ip-echo-cloudflare/compare/v1.1.2...v1.1.3
+[1.1.2]: https://git.average.name/AverageHelper/ip-echo-cloudflare/compare/v1.1.1...v1.1.2
+[1.1.1]: https://git.average.name/AverageHelper/ip-echo-cloudflare/compare/v1.1.0...v1.1.1
+[1.1.0]: https://git.average.name/AverageHelper/ip-echo-cloudflare/compare/v1.0.3...v1.1.0
+[1.0.3]: https://git.average.name/AverageHelper/ip-echo-cloudflare/compare/v1.0.2...v1.0.3
+[1.0.2]: https://git.average.name/AverageHelper/ip-echo-cloudflare/compare/v1.0.1...v1.0.2
+[1.0.1]: https://git.average.name/AverageHelper/ip-echo-cloudflare/compare/v1.0.0...v1.0.1
+[1.0.0]: https://git.average.name/AverageHelper/ip-echo-cloudflare/releases/tag/v1.0.0
