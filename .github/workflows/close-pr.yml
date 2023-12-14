@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   run:
+    if: github.server_url == 'https://github.com' # Skip on Forgejo and others
     runs-on: ubuntu-latest
     steps:
       - name: checkout
