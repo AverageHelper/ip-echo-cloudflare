@@ -44,14 +44,16 @@ If you're concerned I may be snooping, feel free to run your own instance:
 
 ### Prerequisites
 
-This project requires [NodeJS](https://nodejs.org/) (version 18.17 or later) and [NPM](https://npmjs.org/). To make sure you have them available on your machine,
-try running the following command:
+This project uses [Nixpkg](https://nixos.org/download#download-nix) to manage the dev environment. Our `default.nix` file currently defines an environment that has appropriate versions of `curl`, `jq`, `node`, and `npm`. To make sure you have them available on your machine, try running the following commands:
 
 ```sh
+$ nix-shell
 $ npm -v && node -v
-9.6.7
-v18.17.1
+10.1.0
+v20.9.0
 ```
+
+Alternatively, you may install Node yourself by whatever method you prefer. This project requires [NodeJS](https://nodejs.org/) (version 20 or later) and [NPM](https://npmjs.org/).
 
 ### Clone the repo
 

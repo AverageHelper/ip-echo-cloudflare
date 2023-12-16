@@ -218,6 +218,13 @@ describe("IP Echo", () => {
 			expect(mockServeStatic).toHaveBeenCalledWith({ root: ".", path: "./openapi.yaml" });
 		});
 
+		test("responds 404 if serveStatic returns nothing", async () => {
+			mockServeStatic.mockImplementationOnce(() => (): Promise<void> => Promise.resolve());
+			const response = await fetch(new URL("openapi.yaml", url));
+			expect(response.status).toBe(404);
+			expect(await response.text()).toBe("Not found\n");
+		});
+
 		test("HEAD responds with appropriate headers", async () => {
 			const response = await fetch(new URL("openapi.yaml", url), { method: "HEAD" });
 			// expect(response.headers.get("Content-Type")).toBe("application/x-yaml;charset=UTF-8");
