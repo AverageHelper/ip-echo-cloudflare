@@ -1,10 +1,10 @@
 # IP Echo
 
-A simple no-logs Cloudflare Worker that returns the caller's IP address.
+A simple no-logs Cloudflare Worker that returns the caller's IP address. Superseded by [ip-echo-rust](https://git.average.name/AverageHelper/ip-echo-rust).
 
 ## Usage
 
-A `GET` request to <https://ip.average.name> will return a string containing the caller's IP address.
+A `GET` request to the webserver will return a string containing the caller's IP address.
 
 ```sh
 $ curl https://ip.average.name
