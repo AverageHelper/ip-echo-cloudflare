@@ -1,6 +1,6 @@
 # Security Policies and Procedures
 
-This document outlines security procedures and general policies for the `standard`
+This document outlines security procedures and general policies for the `ip-echo-cloudflare`
 project.
 
 - [Reporting a Bug](#reporting-a-bug)
